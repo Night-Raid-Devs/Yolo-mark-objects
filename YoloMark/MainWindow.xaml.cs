@@ -21,8 +21,7 @@ namespace YoloMark
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string ImgFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
-        private string TrainFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
+        
         private string NamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
 
         private BitmapImage mainImage;
@@ -36,14 +35,7 @@ namespace YoloMark
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            string[] imgFiles = Directory.GetFiles(ImgFolder, "*.jpg");
-            StreamWriter fout = new StreamWriter(TrainFilename);
-            foreach (string str in imgFiles)
-            {
-                fout.WriteLine(str);
-            }
-            fout.Close();
-
+            string[] imgFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"data\img\", "*.jpg");
             this.mainImage = new BitmapImage(new Uri(imgFiles[0]));
             mainCanvas.Background = new ImageBrush(this.mainImage);
         }
