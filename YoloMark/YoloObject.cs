@@ -16,37 +16,34 @@ namespace YoloMark
 
         public double Width { get; private set; } ////relative width of rectangle
 
-        public YoloObject(int id, Point point1, Point point2, double imageHeight, double imageWidth)
+        public YoloObject(int id, Point upperLeftPoint, double rectWidth, double rectHeight, double imageHeight, double imageWidth)
         {
             Debug.WriteLine("Initialize YoloObject");
             this.Id = id;
-            double leftX = point1.X < point2.X ? point1.X : point2.X;
-            double downY = point1.Y < point2.Y ? point1.Y : point2.Y;
-            double rightX = point1.X > point2.X ? point1.X : point2.X;
-            double topY = point1.Y > point2.Y ? point1.Y : point2.Y;
-            double rectHeight = topY - downY;
-            double rectWidth = rightX - leftX;
+            double leftX = upperLeftPoint.X;
+            double topY = upperLeftPoint.Y;
+
+            double rightX = upperLeftPoint.X + rectWidth;
+            double bottomY = upperLeftPoint.Y + rectHeight;
+     
 
             this.X = ((rightX + leftX) / 2) / imageWidth;
-            this.Y = ((topY + downY) / 2) / imageHeight;
+            this.Y = ((topY + bottomY) / 2) / imageHeight;
 
             this.Height = rectHeight / imageHeight;
             this.Width = rectWidth / imageWidth;
         }
          
-        public void GetRectangle(out Point upperLeftCorner, out Point lowerRightPoint, double imageHeight, double imageWidth)
+        public void GetRectangle(out Point upperLeftCorner, out double rectWidth, out double rectHeight, double imageHeight, double imageWidth)
         {
-            double rectWidth = imageWidth * this.Width;
-            double rectHeight = imageHeight * this.Height;
-
-            double rightX = imageWidth * this.X + rectWidth / 2;
+            rectWidth = imageWidth * this.Width;
+            rectHeight = imageHeight * this.Height;
+            
             double leftX = imageWidth * this.X - rectWidth / 2;
 
             double topY = imageHeight * this.Y + rectHeight / 2;
-            double downY = imageHeight * this.Y - rectHeight / 2;
 
             upperLeftCorner = new Point(leftX, topY);
-            lowerRightPoint = new Point(rightX, downY);
         }
 
         public override string ToString() ////returns <x> <y> <width> <height>
