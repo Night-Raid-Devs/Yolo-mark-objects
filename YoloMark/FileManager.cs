@@ -119,9 +119,23 @@ namespace YoloMark
             objectFileNames.Sort();
             this.ObjectFilenames = objectFileNames.ToArray();
 
-            StreamReader fin = new StreamReader(this.ObjNamesFilename);
+            List<string> objNames = new List<string>();
+            foreach (string line in File.ReadLines(this.ObjNamesFilename))
+            {
+                if (!String.IsNullOrWhiteSpace(line))
+                {
+                    objNames.Add(line);
+                }
+            }
+
+            this.YoloObjectNames = objNames.ToArray();
 
             this.CreateTrainFile();
+        }
+
+        public string GetYoloObjectName(int objectNumber)
+        {
+            return this.YoloObjectNames[objectNumber];
         }
 
         public int GetStartImageNumber()
