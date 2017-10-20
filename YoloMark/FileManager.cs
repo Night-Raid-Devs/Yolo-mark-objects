@@ -38,38 +38,47 @@ namespace YoloMark
             }
         }
 
-        public BitmapImage[] GetPreviewImages
+        public BitmapImage[] GetPreviewImages(int previewImagesCount)
         {
-            get
+            if (this.ImageNames == null)
             {
-                if (this.PreviewImages == null)
-                {
-                    this.Initialize();
-                }
-
-                return this.PreviewImages;
+                this.Initialize();
             }
+
+            int startIndx = this.GetStartImageNumber();
+            return this.GetPreviewImages(previewImagesCount, startIndx);
         }
 
-        public void Initialize(int previewImagesCount = 5)
+        public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber)
+        {
+            if (this.ImageNames == null)
+            {
+                this.Initialize();
+            }
+            
+            this.PreviewImages = new BitmapImage[previewImagesCount];
+       
+            if (currentImageNumber > 0)
+            {
+                this.PreviewImages[0] = new BitmapImage(new Uri(ImageNames[currentImageNumber - 1]));
+            }
+
+            int lastPreviewImageNumber = Math.Min(previewImagesCount, ImageNames.Length - currentImageNumber);
+            for (int i = 1; i < lastPreviewImageNumber; i++)
+            {
+                this.PreviewImages[i] = new BitmapImage(new Uri(ImageNames[i]));
+            }
+
+            return this.PreviewImages;
+        }
+
+        public void Initialize()
         {
             List<string> imageNames = new List<string>(Directory.GetFiles(ImageFolder, "*.jpg"));
             imageNames.Sort();
             this.ImageNames = imageNames.ToArray();
 
-            this.PreviewImages = new BitmapImage[previewImagesCount];
-
-            int startIndx = this.GetStartImageNumber();
-            if (startIndx > 0)
-            {
-                this.PreviewImages[0] = new BitmapImage(new Uri(imageNames[startIndx - 1]));
-            }
-
-            int lastPreviewImageNumber = Math.Min(previewImagesCount, imageNames.Count - startIndx);
-            for (int i = 1; i < lastPreviewImageNumber; i++)
-            {
-                this.PreviewImages[i] = new BitmapImage(new Uri(imageNames[i]));
-            }
+            this.CreateTrainFile();
         }
 
         public int GetStartImageNumber()
@@ -102,9 +111,8 @@ namespace YoloMark
             try
             {
                 Debug.WriteLine("Create train file");
-                string[] imgFiles = Directory.GetFiles(ImageFolder, "*.jpg");
                 StreamWriter fout = new StreamWriter(TrainFilename);
-                foreach (string str in imgFiles)
+                foreach (string str in ImageNames)
                 {
                     fout.WriteLine(str);
                 }
