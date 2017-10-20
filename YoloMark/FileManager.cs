@@ -138,8 +138,10 @@ namespace YoloMark
         public void RemoveYoloObject(int currentImageNumber)
         {
             this.yoloObjects.Clear();
-            StreamWriter sw = new StreamWriter(this.ImageFolder + this.ImageNames[currentImageNumber] + ".txt", false);
-            sw.Close();
+            if (File.Exists(ImageFolder + currentImageNumber + ".txt"))
+            {
+                File.Delete(ImageFolder + currentImageNumber + ".txt");
+            }
         }
     }
 }
