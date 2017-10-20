@@ -16,6 +16,7 @@ namespace YoloMark
         private string NamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
 
         private string[] ImageNames;
+        private string[] ObjectFilenames;
 
         private BitmapImage[] PreviewImages;
 
@@ -51,7 +52,7 @@ namespace YoloMark
             return this.GetPreviewImages(previewImagesCount, startIndx, out isChecked);
         }
 
-        public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber,out bool[] isChecked)
+        public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber, out bool[] isChecked)
         {
             isChecked = new bool[previewImagesCount];
             if (this.ImageNames == null)
@@ -97,27 +98,25 @@ namespace YoloMark
             imageNames.Sort();
             this.ImageNames = imageNames.ToArray();
 
+            List<string> objectFileNames = new List<string>(Directory.GetFiles(ImageFolder, "*.txt"));
+            objectFileNames.Sort();
+            this.ObjectFilenames = objectFileNames.ToArray();
+
             this.CreateTrainFile();
         }
 
         public int GetStartImageNumber()
         {
-            List<string> imageNames = new List<string>(Directory.GetFiles(ImageFolder, "*.jpg"));
-            imageNames.Sort();
-
-            List<string> objectFileNames = new List<string>(Directory.GetFiles(ImageFolder, "*.txt"));
-            objectFileNames.Sort();
-
             int indx = 0;
-            for (indx = 0; indx < imageNames.Count && indx < objectFileNames.Count; indx++)
+            for (indx = 0; indx < this.ImageNames.Length && indx < this.ObjectFilenames.Length; indx++)
             {
-                if (Path.GetFileNameWithoutExtension(imageNames[indx]) != Path.GetFileNameWithoutExtension(objectFileNames[indx]))
+                if (Path.GetFileNameWithoutExtension(this.ImageNames[indx]) != Path.GetFileNameWithoutExtension(this.ObjectFilenames[indx]))
                 {
                     break;
                 }
             }
 
-            if (indx < imageNames.Count && indx < objectFileNames.Count)
+            if (indx < this.ImageNames.Length && indx < ObjectFilenames.Length)
             {
                 return indx;
             }
