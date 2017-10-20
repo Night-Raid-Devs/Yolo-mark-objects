@@ -41,6 +41,22 @@ namespace YoloMark
             }
         }
 
+        public int ImagesCount
+        {
+            get
+            {
+                return this.ImageNames.Length;
+            }
+        }
+
+        public int YoloObjectsCount
+        {
+            get
+            {
+                return this.YoloObjectNames.Length;
+            }
+        }
+
         public BitmapImage[] GetPreviewImages(int previewImagesCount, out bool[] isChecked)
         {
             if (this.ImageNames == null)
