@@ -33,6 +33,21 @@ namespace YoloMark
             this.Height = rectHeight / imageHeight;
             this.Width = rectWidth / imageWidth;
         }
+         
+        public void GetRectangle(out Point upperLeftCorner, out Point lowerRightPoint, double imageHeight, double imageWidth)
+        {
+            double rectWidth = imageWidth * this.Width;
+            double rectHeight = imageHeight * this.Height;
+
+            double rightX = imageWidth * this.X + rectWidth / 2;
+            double leftX = imageWidth * this.X - rectWidth / 2;
+
+            double topY = imageHeight * this.Y + rectHeight / 2;
+            double downY = imageHeight * this.Y - rectHeight / 2;
+
+            upperLeftCorner = new Point(leftX, topY);
+            lowerRightPoint = new Point(rightX, downY);
+        }
 
         public override string ToString() ////returns <x> <y> <width> <height>
         {
