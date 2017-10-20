@@ -259,6 +259,11 @@ namespace YoloMark
                 MainCanvas.Children.Remove(this.currentTextBlocks.Last());
                 this.currentBoxes.RemoveAt(this.currentBoxes.Count - 1);
                 this.currentTextBlocks.RemoveAt(this.currentTextBlocks.Count - 1);
+                FileManager.Instance.RemoveLastYoloObject((int)SliderImageNumber.Value);
+                if (this.currentBoxes.Count == 0)
+                {
+                    this.ChangeImages((int)SliderImageNumber.Value);
+                }
             }
         }
 
@@ -273,6 +278,7 @@ namespace YoloMark
             this.currentBoxes.Clear();
             this.currentTextBlocks.Clear();
             FileManager.Instance.ClearYoloObjects();
+            this.ChangeImages((int)SliderImageNumber.Value);
         }
 
         private void MainWnd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -332,8 +338,8 @@ namespace YoloMark
                     this.RemoveLastBox();
                     break;
                 case Key.Delete:
+                    FileManager.Instance.RemoveYoloFile((int)SliderImageNumber.Value);
                     this.RemoveCurrentBoxes();
-                    FileManager.Instance.RemoveYoloObject((int)SliderImageNumber.Value);
                     break;
             }
         }
