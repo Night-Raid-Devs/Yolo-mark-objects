@@ -63,10 +63,6 @@ namespace YoloMark
             { Key.Y, 24 },
         };
 
-        private string ImgFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
-        private string TrainFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
-        private string NamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
-
         private Rectangle selectBox;
         private Point selectBoxStartPos;
         private TextBlock selectBoxTextBlock;
@@ -93,21 +89,23 @@ namespace YoloMark
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            string[] imgFiles = Directory.GetFiles(ImgFolder, "*.jpg");
-            StreamWriter fout = new StreamWriter(TrainFilename);
-            foreach (string str in imgFiles)
-            {
-                fout.WriteLine(str);
-            }
-            fout.Close();
+            FileManager.Instance.Initialize();
+            SliderImageNumber.Maximum = FileManager.Instance.ImagesCount;
+            SliderObjectNumber.Maximum = FileManager.Instance.YoloObjectsCount;
+            SliderImageNumber.Value = FileManager.Instance.GetStartImageNumber();
+            this.ChangeImages((int)SliderImageNumber.Value);
+        }
 
-            SliderImageNumber.Maximum = 500;
-            SliderObjectNumber.Maximum = 24;
-            MainCanvas.Background = new ImageBrush(new BitmapImage(new Uri(imgFiles[0])));
-            for (int i = 0; i < PreviewImagesCount; i++)
+        private void ChangeImages(int currentImageNumber)
+        {
+            BitmapImage[] previewBitmapImages = FileManager.Instance.GetPreviewImages(PreviewImagesCount, currentImageNumber, out bool[] isCheched);
+            for (int i = 0; i < previewImages.Length; i++)
             {
-                this.previewImages[i].Source = new BitmapImage(new Uri(imgFiles[i]));
+                this.previewImages[i].Source = previewBitmapImages[i];
+                this.previewImagesCheck[i].Visibility = isCheched[i] ? Visibility.Visible : Visibility.Hidden;
             }
+
+            MainCanvas.Background = new ImageBrush(previewBitmapImages[1]);
         }
 
         private void ResizeButton_Click(object sender, RoutedEventArgs e)
@@ -187,11 +185,21 @@ namespace YoloMark
 
                 this.currentBoxes.Add(this.selectBox);
                 this.currentTextBlocks.Add(this.selectBoxTextBlock);
+                double left = Canvas.GetLeft(this.selectBox);
+                double top = Canvas.GetTop(this.selectBox);
+                ////FileManager.Instance.AddYoloObject((int)SliderImageNumber.Value, (int)SliderObjectNumber.Value,
+                ////    new Point(left, top),
+                ////    new Point());
                 this.selectBox = null;
                 return true;
             }
 
             return false;
+        }
+
+        private void AddBox(Point leftTopPoint, double width, double height)
+        {
+
         }
 
         private bool RemoveSelectBox()
@@ -207,6 +215,14 @@ namespace YoloMark
             return false;
         }
 
+        private void RemoveBox(int objectNumber)
+        {
+            MainCanvas.Children.Remove(this.currentBoxes[objectNumber]);
+            MainCanvas.Children.Remove(this.currentTextBlocks[objectNumber]);
+            this.currentBoxes.RemoveAt(objectNumber);
+            this.currentTextBlocks.RemoveAt(objectNumber);
+        }
+
         private void RemoveCurrentBoxes()
         {
             for (int i = 0; i < this.currentBoxes.Count; i++)
@@ -217,6 +233,7 @@ namespace YoloMark
 
             this.currentBoxes.Clear();
             this.currentTextBlocks.Clear();
+            FileManager.Instance.ClearYoloObjects();
         }
 
         private void MainWnd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -263,7 +280,7 @@ namespace YoloMark
 
         private void MainWnd_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            RemoveSelectBox();
+            this.RemoveSelectBox();
         }
 
         private void MainWnd_KeyDown(object sender, KeyEventArgs e)
@@ -279,37 +296,30 @@ namespace YoloMark
             switch (e.Key)
             {
                 case Key.Left:
-
+                    SliderImageNumber.Value--;
                     this.RemoveCurrentBoxes();
                     break;
                 case Key.Right:
-
+                    SliderImageNumber.Value++;
                     this.RemoveCurrentBoxes();
                     break;
                 case Key.Back:
                     if (this.currentBoxes.Count > 0)
                     {
-                        MainCanvas.Children.Remove(this.currentBoxes.Last());
-                        MainCanvas.Children.Remove(this.currentTextBlocks.Last());
-                        this.currentBoxes.RemoveAt(this.currentBoxes.Count - 1);
-                        this.currentTextBlocks.RemoveAt(this.currentTextBlocks.Count - 1);
+                        this.RemoveBox(this.currentBoxes.Count - 1);
                     }
 
                     break;
                 case Key.Delete:
-
                     this.RemoveCurrentBoxes();
+                    FileManager.Instance.RemoveYoloObject((int)SliderImageNumber.Value);
                     break;
             }
         }
 
         private void SliderImageNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            string[] imgFiles = Directory.GetFiles(ImgFolder, "*.jpg");
-            for (int i = 0; i < PreviewImagesCount; i++)
-            {
-                this.previewImages[i].Source = new BitmapImage(new Uri(imgFiles[(int)e.NewValue + i]));
-            }
+            this.ChangeImages((int)e.NewValue);
         }
     }
 }
