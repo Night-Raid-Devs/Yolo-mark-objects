@@ -66,7 +66,7 @@ namespace YoloMark
         private Rectangle selectBox;
         private Point selectBoxStartPos;
         private TextBlock selectBoxTextBlock;
-        private Random random = new Random();
+        private static Random random = new Random();
         private Image[] previewImages = new Image[PreviewImagesCount];
         private Image[] previewImagesCheck = new Image[PreviewImagesCount];
         private List<Rectangle> currentBoxes = new List<Rectangle>();
@@ -106,6 +106,17 @@ namespace YoloMark
             }
 
             MainCanvas.Background = new ImageBrush(previewBitmapImages[1]);
+            if (isCheched[1])
+            {
+                ////for (int i = 0; i < FileManager.Instance.YoloObjectsCount; i++)
+                ////{
+                ////    FileManager.Instance.YoloObjects[i].GetRectangle(out Point leftTopPoint,
+                ////        out double boxWidth, out double boxHeight, MainCanvas.ActualWidth, MainCanvas.ActualHeight);
+                ////    GetBox(boxWidth, boxHeight, FileManager.Instance.YoloObjects[i].Id,
+                ////        out Rectangle box, out TextBlock textBlock);
+                ////    this.AddBox(leftTopPoint, box, textBlock);
+                ////}
+            }
         }
 
         private void ResizeButton_Click(object sender, RoutedEventArgs e)
@@ -185,11 +196,11 @@ namespace YoloMark
 
                 this.currentBoxes.Add(this.selectBox);
                 this.currentTextBlocks.Add(this.selectBoxTextBlock);
-                double left = Canvas.GetLeft(this.selectBox);
-                double top = Canvas.GetTop(this.selectBox);
-                ////FileManager.Instance.AddYoloObject((int)SliderImageNumber.Value, (int)SliderObjectNumber.Value,
-                ////    new Point(left, top),
-                ////    new Point());
+                Point leftTopPoint = new Point(Canvas.GetLeft(this.selectBox), Canvas.GetTop(this.selectBox));
+                FileManager.Instance.AddYoloObject((int)SliderImageNumber.Value, (int)SliderObjectNumber.Value,
+                    leftTopPoint,
+                    this.selectBox.Width, this.selectBox.Height,
+                    MainCanvas.ActualWidth, MainCanvas.ActualHeight);
                 this.selectBox = null;
                 return true;
             }
@@ -197,9 +208,34 @@ namespace YoloMark
             return false;
         }
 
-        private void AddBox(Point leftTopPoint, double width, double height)
+        private static void GetBox(double width, double height, int objectNumber, out Rectangle box, out TextBlock textBlock)
         {
+            SolidColorBrush boxColor = new SolidColorBrush(Color.FromRgb((byte)(random.Next() % 256), (byte)(random.Next() % 256), (byte)(random.Next() % 256)));
+            box = new Rectangle()
+            {
+                StrokeThickness = SelectBoxBorderWidth,
+                Stroke = boxColor,
+                Width = width,
+                Height = height
+            };
+            textBlock = new TextBlock()
+            {
+                Text = objectNumber + " - " + FileManager.Instance.GetYoloObjectName(objectNumber),
+                Foreground = boxColor,
+                FontSize = SelectBoxObjectNameFontSize
+            };
+        }
 
+        private void AddBox(Point leftTopPoint, Rectangle box, TextBlock textBlock)
+        {
+            Canvas.SetLeft(box, leftTopPoint.X);
+            Canvas.SetTop(box, leftTopPoint.Y);
+            MainCanvas.Children.Add(box);
+            Canvas.SetLeft(textBlock, leftTopPoint.X + SelectBoxBorderWidth);
+            Canvas.SetTop(textBlock, leftTopPoint.Y + SelectBoxBorderWidth - 10);
+            MainCanvas.Children.Add(textBlock);
+            this.currentBoxes.Add(box);
+            this.currentTextBlocks.Add(textBlock);
         }
 
         private bool RemoveSelectBox()
@@ -215,12 +251,15 @@ namespace YoloMark
             return false;
         }
 
-        private void RemoveBox(int objectNumber)
+        private void RemoveLastBox()
         {
-            MainCanvas.Children.Remove(this.currentBoxes[objectNumber]);
-            MainCanvas.Children.Remove(this.currentTextBlocks[objectNumber]);
-            this.currentBoxes.RemoveAt(objectNumber);
-            this.currentTextBlocks.RemoveAt(objectNumber);
+            if (this.currentBoxes.Count > 0)
+            {
+                MainCanvas.Children.Remove(this.currentBoxes.Last());
+                MainCanvas.Children.Remove(this.currentTextBlocks.Last());
+                this.currentBoxes.RemoveAt(this.currentBoxes.Count - 1);
+                this.currentTextBlocks.RemoveAt(this.currentTextBlocks.Count - 1);
+            }
         }
 
         private void RemoveCurrentBoxes()
@@ -249,25 +288,11 @@ namespace YoloMark
                 return;
             }
 
-            SolidColorBrush boxColor = new SolidColorBrush(Color.FromRgb((byte)(random.Next() % 256), (byte)(random.Next() % 256), (byte)(random.Next() % 256)));
-            this.selectBox = new Rectangle()
-            {
-                StrokeThickness = SelectBoxBorderWidth,
-                Stroke = boxColor
-            };
             this.selectBoxStartPos = mousePos;
+            GetBox(0, 0, (int)SliderObjectNumber.Value, out this.selectBox, out this.selectBoxTextBlock);
             Canvas.SetLeft(this.selectBox, this.selectBoxStartPos.X);
             Canvas.SetTop(this.selectBox, this.selectBoxStartPos.Y);
-            this.selectBox.Width = 0;
-            this.selectBox.Height = 0;
             MainCanvas.Children.Add(this.selectBox);
-
-            this.selectBoxTextBlock = new TextBlock()
-            {
-                Text = SliderObjectNumber.Value.ToString(),
-                Foreground = boxColor,
-                FontSize = SelectBoxObjectNameFontSize
-            };
             Canvas.SetLeft(this.selectBoxTextBlock, this.selectBoxStartPos.X + SelectBoxBorderWidth);
             Canvas.SetTop(this.selectBoxTextBlock, this.selectBoxStartPos.Y + SelectBoxBorderWidth - 10);
             MainCanvas.Children.Add(this.selectBoxTextBlock);
@@ -304,11 +329,7 @@ namespace YoloMark
                     this.RemoveCurrentBoxes();
                     break;
                 case Key.Back:
-                    if (this.currentBoxes.Count > 0)
-                    {
-                        this.RemoveBox(this.currentBoxes.Count - 1);
-                    }
-
+                    this.RemoveLastBox();
                     break;
                 case Key.Delete:
                     this.RemoveCurrentBoxes();
