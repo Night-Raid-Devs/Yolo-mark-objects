@@ -5,19 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoloMark"
         mc:Ignorable="d"
-        Title="Yolo mark objects" Width="1016" Height="500" Loaded="MainWindow_Loaded">
+        Title="Yolo mark objects" Width="1016" Height="500" Loaded="MainWindow_Loaded" MouseMove="MainWnd_MouseMove" MouseLeftButtonDown="MainWnd_MouseLeftButtonDown" MouseLeftButtonUp="MainWnd_MouseLeftButtonUp" MouseRightButtonDown="MainWnd_MouseRightButtonDown" KeyDown="MainWnd_KeyDown" KeyUp="MainWnd_KeyUp">
     <Grid>
-        <TextBox x:Name="TextBoxWidth" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="10,4,0,0"/>
-        <TextBox x:Name="TextBoxHeight" HorizontalAlignment="Left" Height="23" Margin="135,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="ResizeButton" Content="Resize main image" HorizontalAlignment="Left" Margin="260,4,0,0" VerticalAlignment="Top" Width="111" Click="ResizeButton_Click"/>
-        <Canvas x:Name="MainCanvas" Margin="5,153,5,5" Cursor="Arrow" SizeChanged="MainCanvas_SizeChanged" MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown" MouseMove="MainCanvas_MouseMove" MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp" MouseRightButtonDown="MainCanvas_MouseRightButtonDown" />
-        <Label Content="Image:" HorizontalAlignment="Left" Margin="376,0,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TextBoxImageNumber" HorizontalAlignment="Left" Height="23" Margin="422,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderImageNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderImageNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="477,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
-        <Label Content="Object:" HorizontalAlignment="Left" Margin="632,0,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="684,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderObjectNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderObjectNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="739,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderObjectNumber_ValueChanged"/>
-        <Grid Margin="0,33,0,321">
+        <TextBox x:Name="TextBoxWidth" Text="{Binding ElementName=MainCanvas,Path=ActualWidth,Mode=OneWay}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Margin="10,4,0,0"/>
+        <TextBox x:Name="TextBoxHeight" Text="{Binding ElementName=MainCanvas,Path=ActualHeight,Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="65,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
+        <Button x:Name="ResizeButton" Content="Resize main image" HorizontalAlignment="Left" Margin="120,4,0,0" VerticalAlignment="Top" Width="111" Click="ResizeButton_Click" Height="23"/>
+        <Canvas x:Name="MainCanvas" Margin="10,153,10,10" Cursor="Arrow"/>
+        <Label Content="Image:" HorizontalAlignment="Left" Margin="236,0,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TextBoxImageNumber" HorizontalAlignment="Left" Height="23" Margin="287,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderImageNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
+        <Slider x:Name="SliderImageNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="342,4,0,0" VerticalAlignment="Top" Width="250" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
+        <Label Content="Object:" HorizontalAlignment="Left" Margin="597,0,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="644,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderObjectNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
+        <Slider x:Name="SliderObjectNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1"/>
+        <Grid Margin="0,33,0,0" Height="115" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -35,6 +35,8 @@
             <Image x:Name="ImagePreview4Check" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="3" Source="green_check.png" Visibility="Hidden"/>
             <Image x:Name="ImagePreview5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="4"/>
             <Image x:Name="ImagePreview5Check" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="4" Source="green_check.png" Visibility="Hidden"/>
+            <Border BorderBrush="Green" BorderThickness="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
         </Grid>
+        <Label x:Name="LabelObjectName" Content="ObjectName" HorizontalAlignment="Left" Margin="854,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.921,0.231"/>
     </Grid>
 </Window>
