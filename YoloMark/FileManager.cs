@@ -156,9 +156,9 @@ namespace YoloMark
             return 0;
         }
 
-        public void AddYoloObject(int imageNumber, int objectId, Point point1, double rectWidth, double rectHeight, double imageHeight, double imageWidth)
+        public void AddYoloObject(int imageNumber, int objectId, Point point1, double rectWidth, double rectHeight, double imageWidth, double imageHeight)
         {
-            this.YoloObjects.Add(new YoloObject(objectId, point1, rectWidth, rectHeight, imageHeight, imageWidth));
+            this.YoloObjects.Add(new YoloObject(objectId, point1, rectWidth, rectHeight, imageWidth, imageHeight));
 
             this.RewriteObjectFile(imageNumber);   
         }

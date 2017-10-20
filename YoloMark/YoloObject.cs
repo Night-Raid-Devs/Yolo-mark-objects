@@ -16,7 +16,7 @@ namespace YoloMark
 
         public double Width { get; private set; } ////relative width of rectangle
 
-        public YoloObject(int id, Point upperLeftPoint, double rectWidth, double rectHeight, double imageHeight, double imageWidth)
+        public YoloObject(int id, Point upperLeftPoint, double rectWidth, double rectHeight, double imageWidth, double imageHeight)
         {
             Debug.WriteLine("Initialize YoloObject");
             this.Id = id;
@@ -34,7 +34,7 @@ namespace YoloMark
             this.Width = rectWidth / imageWidth;
         }
          
-        public void GetRectangle(out Point upperLeftCorner, out double rectWidth, out double rectHeight, double imageHeight, double imageWidth)
+        public void GetRectangle(out Point upperLeftCorner, out double rectWidth, out double rectHeight, double imageWidth, double imageHeight)
         {
             rectWidth = imageWidth * this.Width;
             rectHeight = imageHeight * this.Height;
