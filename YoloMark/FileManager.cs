@@ -13,7 +13,7 @@ namespace YoloMark
 
         private string ImageFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
         private string TrainFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
-        private string NamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
+        private string ObjNamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
 
         private string[] ImageNames;
         private string[] ObjectFilenames;
@@ -91,11 +91,12 @@ namespace YoloMark
                 }
             }
 
+            currentImageNumber++;
             int lastPreviewImageNumber = Math.Min(previewImagesCount, ImageNames.Length - currentImageNumber);
-            for (int i = 1; i < lastPreviewImageNumber; i++)
+            for (int i = 1; i < lastPreviewImageNumber; i++, currentImageNumber++)
             {
-                this.PreviewImages[i] = new BitmapImage(new Uri(ImageNames[i]));
-                if (File.Exists(this.ImageFolder + ImageNames[i] + ".txt"))
+                this.PreviewImages[i] = new BitmapImage(new Uri(ImageNames[currentImageNumber]));
+                if (File.Exists(this.ImageFolder + ImageNames[currentImageNumber] + ".txt"))
                 {
                     isChecked[i] = true;
                 }
@@ -117,6 +118,8 @@ namespace YoloMark
             List<string> objectFileNames = new List<string>(Directory.GetFiles(ImageFolder, "*.txt"));
             objectFileNames.Sort();
             this.ObjectFilenames = objectFileNames.ToArray();
+
+            StreamReader fin = new StreamReader(this.ObjNamesFilename);
 
             this.CreateTrainFile();
         }
