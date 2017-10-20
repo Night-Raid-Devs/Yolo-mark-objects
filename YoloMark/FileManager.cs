@@ -22,8 +22,6 @@ namespace YoloMark
 
         private string[] YoloObjectNames;
 
-        private List<YoloObject> yoloObjects = new List<YoloObject>();
-
         private FileManager()
         {
         }
@@ -40,6 +38,8 @@ namespace YoloMark
                 return instance;
             }
         }
+
+        public List<YoloObject> YoloObjects { get; set; } = new List<YoloObject>();
 
         public int ImagesCount
         {
@@ -159,10 +159,10 @@ namespace YoloMark
 
         public void AddYoloObject(int imageNumber, int objectId, Point point1, Point point2, double imageHeight, double imageWidth)
         {
-            this.yoloObjects.Add(new YoloObject(objectId, point1, point2, imageHeight, imageWidth));
+            this.YoloObjects.Add(new YoloObject(objectId, point1, point2, imageHeight, imageWidth));
 
             StreamWriter fout = new StreamWriter(this.ImageFolder + this.ImageNames[imageNumber] + ".txt");
-            foreach (YoloObject yoloObj in this.yoloObjects)
+            foreach (YoloObject yoloObj in this.YoloObjects)
             {
                 fout.WriteLine(yoloObj.ToString());
             }
@@ -172,12 +172,12 @@ namespace YoloMark
 
         public void ClearYoloObjects()
         {
-            this.yoloObjects.Clear();
+            this.YoloObjects.Clear();
         }
 
         public void RemoveYoloObject(int currentImageNumber)
         {
-            this.yoloObjects.Clear();
+            this.YoloObjects.Clear();
             if (File.Exists(ImageFolder + currentImageNumber + ".txt"))
             {
                 File.Delete(ImageFolder + currentImageNumber + ".txt");
