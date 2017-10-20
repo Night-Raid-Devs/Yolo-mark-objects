@@ -12,12 +12,14 @@ namespace YoloMark
         private static FileManager instance;
 
         private string ImageFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
-
         private string TrainFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
+        private string NamesFilename = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
 
         private string[] ImageNames;
 
         private BitmapImage[] PreviewImages;
+
+        private string[] YoloObjectNames;
 
         private List<YoloObject> yoloObjects = new List<YoloObject>();
 
@@ -38,7 +40,7 @@ namespace YoloMark
             }
         }
 
-        public BitmapImage[] GetPreviewImages(int previewImagesCount)
+        public BitmapImage[] GetPreviewImages(int previewImagesCount, out bool[] isChecked)
         {
             if (this.ImageNames == null)
             {
@@ -46,27 +48,44 @@ namespace YoloMark
             }
 
             int startIndx = this.GetStartImageNumber();
-            return this.GetPreviewImages(previewImagesCount, startIndx);
+            return this.GetPreviewImages(previewImagesCount, startIndx, out isChecked);
         }
 
-        public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber)
+        public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber,out bool[] isChecked)
         {
+            isChecked = new bool[previewImagesCount];
             if (this.ImageNames == null)
             {
                 this.Initialize();
             }
             
             this.PreviewImages = new BitmapImage[previewImagesCount];
-       
+
             if (currentImageNumber > 0)
             {
                 this.PreviewImages[0] = new BitmapImage(new Uri(ImageNames[currentImageNumber - 1]));
+                if (File.Exists(this.ImageFolder + ImageNames[currentImageNumber - 1] + ".txt"))
+                {
+                    isChecked[0] = true;
+                }
+                else
+                {
+                    isChecked[0] = false;
+                }
             }
 
             int lastPreviewImageNumber = Math.Min(previewImagesCount, ImageNames.Length - currentImageNumber);
             for (int i = 1; i < lastPreviewImageNumber; i++)
             {
                 this.PreviewImages[i] = new BitmapImage(new Uri(ImageNames[i]));
+                if (File.Exists(this.ImageFolder + ImageNames[i] + ".txt"))
+                {
+                    isChecked[i] = true;
+                }
+                else
+                {
+                    isChecked[i] = false;
+                }
             }
 
             return this.PreviewImages;
@@ -106,25 +125,6 @@ namespace YoloMark
             return 0;
         }
 
-        public void CreateTrainFile()
-        {
-            try
-            {
-                Debug.WriteLine("Create train file");
-                StreamWriter fout = new StreamWriter(TrainFilename);
-                foreach (string str in ImageNames)
-                {
-                    fout.WriteLine(str);
-                }
-
-                fout.Close();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
-
         public void AddYoloObject(int imageNumber, int objectId, Point point1, Point point2, double imageHeight, double imageWidth)
         {
             this.yoloObjects.Add(new YoloObject(objectId, point1, point2, imageHeight, imageWidth));
@@ -149,6 +149,25 @@ namespace YoloMark
             if (File.Exists(ImageFolder + currentImageNumber + ".txt"))
             {
                 File.Delete(ImageFolder + currentImageNumber + ".txt");
+            }
+        }
+
+        private void CreateTrainFile()
+        {
+            try
+            {
+                Debug.WriteLine("Create train file");
+                StreamWriter fout = new StreamWriter(TrainFilename);
+                foreach (string str in ImageNames)
+                {
+                    fout.WriteLine(str);
+                }
+
+                fout.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
     }
