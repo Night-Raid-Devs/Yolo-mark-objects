@@ -157,9 +157,9 @@ namespace YoloMark
             return 0;
         }
 
-        public void AddYoloObject(int imageNumber, int objectId, Point point1, Point point2, double imageHeight, double imageWidth)
+        public void AddYoloObject(int imageNumber, int objectId, Point point1, double rectWidth, double rectHeight, double imageHeight, double imageWidth)
         {
-            this.YoloObjects.Add(new YoloObject(objectId, point1, point2, imageHeight, imageWidth));
+            this.YoloObjects.Add(new YoloObject(objectId, point1, rectWidth, rectHeight, imageHeight, imageWidth));
 
             StreamWriter fout = new StreamWriter(this.ImageFolder + this.ImageNames[imageNumber] + ".txt");
             foreach (YoloObject yoloObj in this.YoloObjects)
