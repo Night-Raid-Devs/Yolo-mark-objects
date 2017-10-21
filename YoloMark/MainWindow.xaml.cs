@@ -94,6 +94,7 @@ namespace YoloMark
             SliderObjectNumber.Maximum = FileManager.Instance.YoloObjectsCount;
             SliderImageNumber.Value = FileManager.Instance.GetStartImageNumber();
             LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)SliderObjectNumber.Value);
+            LabelObjectName2.Content = FileManager.Instance.GetYoloObjectName((int)SliderObjectNumber.Value) + " (" + SliderObjectNumber.Value + ")";
             this.ChangeImages((int)SliderImageNumber.Value);
         }
 
@@ -222,7 +223,7 @@ namespace YoloMark
             };
             textBlock = new TextBlock()
             {
-                Text = objectNumber + " - " + FileManager.Instance.GetYoloObjectName(objectNumber),
+                Text = FileManager.Instance.GetYoloObjectName(objectNumber) + " (" + objectNumber + ")",
                 Foreground = boxColor,
                 FontSize = SelectBoxObjectNameFontSize
             };
@@ -377,6 +378,7 @@ namespace YoloMark
         private void SliderObjectNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)e.NewValue);
+            LabelObjectName2.Content = FileManager.Instance.GetYoloObjectName((int)e.NewValue) + " (" + e.NewValue + ")";
         }
     }
 }
