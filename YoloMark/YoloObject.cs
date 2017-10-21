@@ -41,7 +41,7 @@ namespace YoloMark
             
             double leftX = imageWidth * this.X - rectWidth / 2;
 
-            double topY = imageHeight * this.Y + rectHeight / 2;
+            double topY = imageHeight * this.Y - rectHeight / 2;
 
             upperLeftCorner = new Point(leftX, topY);
         }

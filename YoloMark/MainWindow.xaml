@@ -10,13 +10,13 @@
         <TextBox x:Name="TextBoxWidth" Text="{Binding ElementName=MainCanvas,Path=ActualWidth,Mode=OneWay}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Margin="10,4,0,0"/>
         <TextBox x:Name="TextBoxHeight" Text="{Binding ElementName=MainCanvas,Path=ActualHeight,Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="65,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
         <Button x:Name="ResizeButton" Content="Resize main image" HorizontalAlignment="Left" Margin="120,4,0,0" VerticalAlignment="Top" Width="111" Click="ResizeButton_Click" Height="23"/>
-        <Canvas x:Name="MainCanvas" Margin="10,153,10,10" Cursor="Arrow"/>
+        <Canvas x:Name="MainCanvas" Margin="10,153,10,10" Cursor="Arrow" SizeChanged="MainCanvas_SizeChanged"/>
         <Label Content="Image:" HorizontalAlignment="Left" Margin="236,0,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TextBoxImageNumber" HorizontalAlignment="Left" Height="23" Margin="287,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderImageNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderImageNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="342,4,0,0" VerticalAlignment="Top" Width="250" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
+        <Slider x:Name="SliderImageNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="342,4,0,0" VerticalAlignment="Top" Width="250" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
         <Label Content="Object:" HorizontalAlignment="Left" Margin="597,0,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="644,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderObjectNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderObjectNumber" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1"/>
+        <Slider x:Name="SliderObjectNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1"/>
         <Grid Margin="0,33,0,0" Height="115" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
