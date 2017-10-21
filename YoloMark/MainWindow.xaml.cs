@@ -93,6 +93,7 @@ namespace YoloMark
             SliderImageNumber.Maximum = FileManager.Instance.ImagesCount;
             SliderObjectNumber.Maximum = FileManager.Instance.YoloObjectsCount;
             SliderImageNumber.Value = FileManager.Instance.GetStartImageNumber();
+            LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)SliderObjectNumber.Value);
             this.ChangeImages((int)SliderImageNumber.Value);
         }
 
@@ -334,6 +335,10 @@ namespace YoloMark
                     SliderImageNumber.Value++;
                     this.RemoveCurrentBoxes();
                     break;
+                case Key.Space:
+                    SliderImageNumber.Value++;
+                    this.RemoveCurrentBoxes();
+                    break;
                 case Key.Back:
                     this.RemoveLastBox();
                     break;
@@ -367,6 +372,11 @@ namespace YoloMark
                 Canvas.SetLeft(this.currentTextBlocks[i], leftTopPoint.X + SelectBoxBorderWidth);
                 Canvas.SetTop(this.currentTextBlocks[i], leftTopPoint.Y + SelectBoxBorderWidth - 10);
             }
+        }
+
+        private void SliderObjectNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)e.NewValue);
         }
     }
 }

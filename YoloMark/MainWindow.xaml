@@ -16,7 +16,7 @@
         <Slider x:Name="SliderImageNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="342,4,0,0" VerticalAlignment="Top" Width="250" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
         <Label Content="Object:" HorizontalAlignment="Left" Margin="597,0,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="644,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderObjectNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderObjectNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1"/>
+        <Slider x:Name="SliderObjectNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderObjectNumber_ValueChanged"/>
         <Grid Margin="0,33,0,0" Height="115" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
