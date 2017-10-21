@@ -6,20 +6,29 @@ namespace YoloMark
 {
     public class YoloObject
     {
-        public int Id { get; private set; }
+        public int Number { get; private set; }
 
-        public double X { get; private set; } ////relative center of rectangle
+        public double X { get; private set; } // relative center of rectangle
 
-        public double Y { get; private set; } ////relative center of rectangle
+        public double Y { get; private set; } // relative center of rectangle
 
-        public double Height { get; private set; } ////relative height of rectangle
+        public double Width { get; private set; } // relative width of rectangle
 
-        public double Width { get; private set; } ////relative width of rectangle
+        public double Height { get; private set; } // relative height of rectangle
 
-        public YoloObject(int id, Point upperLeftPoint, double rectWidth, double rectHeight, double imageWidth, double imageHeight)
+        public YoloObject(int number, double x, double y, double width, double height)
+        {
+            this.Number = number;
+            this.X = x;
+            this.Y = y;
+            this.Width = width;
+            this.Height = height;
+        }
+
+        public YoloObject(int number, Point upperLeftPoint, double rectWidth, double rectHeight, double imageWidth, double imageHeight)
         {
             Debug.WriteLine("Initialize YoloObject");
-            this.Id = id;
+            this.Number = number;
             double leftX = upperLeftPoint.X;
             double topY = upperLeftPoint.Y;
 
@@ -48,7 +57,7 @@ namespace YoloMark
 
         public override string ToString() ////returns <x> <y> <width> <height>
         {
-            return this.Id + " " + this.X.ToString("f6", CultureInfo.InvariantCulture) + " " + this.Y.ToString("f6", CultureInfo.InvariantCulture) +
+            return this.Number + " " + this.X.ToString("f6", CultureInfo.InvariantCulture) + " " + this.Y.ToString("f6", CultureInfo.InvariantCulture) +
                    " " + this.Width.ToString("f6", CultureInfo.InvariantCulture) + " " + this.Height.ToString("f6", CultureInfo.InvariantCulture);
         }
     }

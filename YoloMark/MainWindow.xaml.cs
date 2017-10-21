@@ -90,8 +90,8 @@ namespace YoloMark
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             FileManager.Instance.Initialize();
-            SliderImageNumber.Maximum = FileManager.Instance.ImagesCount;
-            SliderObjectNumber.Maximum = FileManager.Instance.YoloObjectsCount;
+            SliderImageNumber.Maximum = FileManager.Instance.ImagesCount - 1;
+            SliderObjectNumber.Maximum = FileManager.Instance.YoloObjectsCount - 1;
             SliderImageNumber.Value = FileManager.Instance.GetStartImageNumber();
             LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)SliderObjectNumber.Value);
             LabelObjectName2.Content = FileManager.Instance.GetYoloObjectName((int)SliderObjectNumber.Value) + " (" + SliderObjectNumber.Value + ")";
@@ -110,14 +110,14 @@ namespace YoloMark
             MainCanvas.Background = new ImageBrush(previewBitmapImages[1]);
             if (isCheched[1])
             {
-                ////for (int i = 0; i < FileManager.Instance.YoloObjects.Count; i++)
-                ////{
-                ////    FileManager.Instance.YoloObjects[i].GetRectangle(out Point leftTopPoint,
-                ////        out double boxWidth, out double boxHeight, MainCanvas.ActualWidth, MainCanvas.ActualHeight);
-                ////    GetBox(boxWidth, boxHeight, FileManager.Instance.YoloObjects[i].Id,
-                ////        out Rectangle box, out TextBlock textBlock);
-                ////    this.AddBox(leftTopPoint, box, textBlock);
-                ////}
+                for (int i = 0; i < FileManager.Instance.YoloObjects.Count; i++)
+                {
+                    FileManager.Instance.YoloObjects[i].GetRectangle(out Point leftTopPoint,
+                        out double boxWidth, out double boxHeight, MainCanvas.ActualWidth, MainCanvas.ActualHeight);
+                    GetBox(boxWidth, boxHeight, FileManager.Instance.YoloObjects[i].Number,
+                        out Rectangle box, out TextBlock textBlock);
+                    this.AddBox(leftTopPoint, box, textBlock);
+                }
             }
         }
 
@@ -329,16 +329,16 @@ namespace YoloMark
             switch (e.Key)
             {
                 case Key.Left:
-                    SliderImageNumber.Value--;
                     this.RemoveCurrentBoxes();
+                    SliderImageNumber.Value--;
                     break;
                 case Key.Right:
-                    SliderImageNumber.Value++;
                     this.RemoveCurrentBoxes();
+                    SliderImageNumber.Value++;
                     break;
                 case Key.Space:
-                    SliderImageNumber.Value++;
                     this.RemoveCurrentBoxes();
+                    SliderImageNumber.Value++;
                     break;
                 case Key.Back:
                     this.RemoveLastBox();
