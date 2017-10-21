@@ -55,7 +55,7 @@ namespace YoloMark
             upperLeftCorner = new Point(leftX, topY);
         }
 
-        public override string ToString() ////returns <x> <y> <width> <height>
+        public override string ToString() // returns <x> <y> <width> <height>
         {
             return this.Number + " " + this.X.ToString("f6", CultureInfo.InvariantCulture) + " " + this.Y.ToString("f6", CultureInfo.InvariantCulture) +
                    " " + this.Width.ToString("f6", CultureInfo.InvariantCulture) + " " + this.Height.ToString("f6", CultureInfo.InvariantCulture);
