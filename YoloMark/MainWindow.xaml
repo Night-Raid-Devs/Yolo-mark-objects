@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoloMark"
         mc:Ignorable="d"
-        Title="Yolo mark objects" Width="1016" Height="600.5" Loaded="MainWindow_Loaded" MouseMove="MainWnd_MouseMove" MouseLeftButtonDown="MainWnd_MouseLeftButtonDown" MouseLeftButtonUp="MainWnd_MouseLeftButtonUp" MouseRightButtonDown="MainWnd_MouseRightButtonDown" KeyDown="MainWnd_KeyDown" KeyUp="MainWnd_KeyUp">
+        Title="Yolo mark objects" Width="1036" Height="439" Loaded="MainWindow_Loaded" MouseMove="MainWnd_MouseMove" MouseLeftButtonDown="MainWnd_MouseLeftButtonDown" MouseLeftButtonUp="MainWnd_MouseLeftButtonUp" MouseRightButtonDown="MainWnd_MouseRightButtonDown" KeyDown="MainWnd_KeyDown" KeyUp="MainWnd_KeyUp">
     <Grid>
         <TextBox x:Name="TextBoxWidth" Text="{Binding ElementName=MainCanvas,Path=ActualWidth,Mode=OneWay}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Margin="10,4,0,0"/>
         <TextBox x:Name="TextBoxHeight" Text="{Binding ElementName=MainCanvas,Path=ActualHeight,Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="65,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
@@ -15,8 +15,8 @@
         <TextBox x:Name="TextBoxImageNumber" HorizontalAlignment="Left" Height="23" Margin="287,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderImageNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
         <Slider x:Name="SliderImageNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="342,4,0,0" VerticalAlignment="Top" Width="250" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderImageNumber_ValueChanged"/>
         <Label Content="Object:" HorizontalAlignment="Left" Margin="597,0,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="644,4,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderObjectNumber,Path=Value,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="50"/>
-        <Slider x:Name="SliderObjectNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="699,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderObjectNumber_ValueChanged"/>
+        <Label x:Name="TextBoxObjectNumber" HorizontalAlignment="Left" Height="23" Margin="649,0,0,0" Content="{Binding ElementName=SliderObjectNumber,Path=Value}" VerticalAlignment="Top" Width="30"/>
+        <Slider x:Name="SliderObjectNumber" Focusable="False" IsSnapToTickEnabled="True" HorizontalAlignment="Left" Margin="679,4,0,0" VerticalAlignment="Top" Width="150" TickPlacement="BottomRight" SmallChange="1" ValueChanged="SliderObjectNumber_ValueChanged"/>
         <Grid Margin="0,33,0,0" Height="115" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -37,7 +37,7 @@
             <Image x:Name="ImagePreview5Check" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="4" Source="green_check.png" Visibility="Hidden"/>
             <Border BorderBrush="Green" BorderThickness="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
         </Grid>
-        <Label x:Name="LabelObjectName" Content="ObjectName" HorizontalAlignment="Left" Margin="854,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.921,0.231"/>
+        <Label x:Name="LabelObjectName" Content="ObjectName" HorizontalAlignment="Left" Margin="829,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.921,0.231"/>
         <Label x:Name="LabelObjectName2" Foreground="Green" Content="ObjectName" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
         <Label Content="arrows - prev, next, space - next, Esc - exit, Backspace - remove last, Del - remove all, others - your bindings" HorizontalAlignment="Left" Margin="300,153,0,0" VerticalAlignment="Top" FontSize="14"/>
     </Grid>

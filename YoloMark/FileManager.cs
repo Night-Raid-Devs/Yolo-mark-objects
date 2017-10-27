@@ -12,13 +12,15 @@ namespace YoloMark
     {
         private static FileManager instance;
 
-        private string ImageFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
-        private string TrainFileName = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
-        private string ObjNamesFileName = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
+        private string imageFolder = AppDomain.CurrentDomain.BaseDirectory + @"data\img\";
+        private string trainFileName = AppDomain.CurrentDomain.BaseDirectory + @"data\train.txt";
+        private string objNamesFileName = AppDomain.CurrentDomain.BaseDirectory + @"data\obj.names";
 
-        private string[] ImageFileNames;
-        private string[] ObjectFileNames;
-        private string[] YoloObjectNames;
+        private string[] imageFileNames;
+        private string[] objectFileNames;
+        private string[] yoloObjectNames;
+
+        private List<BitmapImage> imageCache = new List<BitmapImage>();
 
         private FileManager()
         {
@@ -43,7 +45,7 @@ namespace YoloMark
         {
             get
             {
-                return this.ImageFileNames.Length;
+                return this.imageFileNames.Length;
             }
         }
 
@@ -51,13 +53,13 @@ namespace YoloMark
         {
             get
             {
-                return this.YoloObjectNames.Length;
+                return this.yoloObjectNames.Length;
             }
         }
 
         public BitmapImage[] GetPreviewImages(int previewImagesCount, out bool[] isChecked)
         {
-            if (this.ImageFileNames == null)
+            if (this.imageFileNames == null)
             {
                 this.Initialize();
             }
@@ -68,28 +70,32 @@ namespace YoloMark
 
         public BitmapImage[] GetPreviewImages(int previewImagesCount, int currentImageNumber, out bool[] isChecked)
         {
-            if (this.ImageFileNames == null)
+            if (this.imageFileNames == null)
             {
                 this.Initialize();
             }
             
             BitmapImage[] previewImages = new BitmapImage[previewImagesCount];
             isChecked = new bool[previewImagesCount];
+            List<BitmapImage> newImageCache = new List<BitmapImage>();
             for (int i = 0; i < previewImagesCount; i++)
             {
                 int imageNumber = i + currentImageNumber - 1;
-                if (imageNumber < 0 || imageNumber >= this.ImageFileNames.Length || !File.Exists(this.ImageFileNames[imageNumber]))
+                if (imageNumber < 0 || imageNumber >= this.imageFileNames.Length || !File.Exists(this.imageFileNames[imageNumber]))
                 {
                     continue;
                 }
 
-                previewImages[i] = new BitmapImage(new Uri(ImageFileNames[imageNumber]));
-                if (File.Exists(ImageFolder + GetFileName(ImageFileNames[imageNumber]) + ".txt"))
+                int index = this.imageCache.FindIndex(image => image.UriSource.OriginalString == this.imageFileNames[imageNumber]);
+                previewImages[i] = index == -1 ? new BitmapImage(new Uri(this.imageFileNames[imageNumber])) : this.imageCache[index];
+                newImageCache.Add(previewImages[i]);
+                if (File.Exists(this.imageFolder + GetFileName(this.imageFileNames[imageNumber]) + ".txt"))
                 {
                     isChecked[i] = true;
                 }
             }
 
+            this.imageCache = newImageCache;
             this.YoloObjects = this.GetYoloObjectsFromFile(currentImageNumber);
             return previewImages;
         }
@@ -97,7 +103,7 @@ namespace YoloMark
         public List<YoloObject> GetYoloObjectsFromFile(int currentImageNumber)
         {
             List<YoloObject> yoloObjects = new List<YoloObject>();
-            string textFileName = ImageFolder + GetFileName(this.ImageFileNames[currentImageNumber]) + ".txt";
+            string textFileName = this.imageFolder + GetFileName(this.imageFileNames[currentImageNumber]) + ".txt";
             if (File.Exists(textFileName))
             {
                 try
@@ -125,7 +131,7 @@ namespace YoloMark
             return yoloObjects;
         }
 
-        private static string[] GetImageFileNames(string imageFolder, params string[] extensions)
+        private static string[] GetimageFileNames(string imageFolder, params string[] extensions)
         {
             List<string> imageFileNames = new List<string>();
             foreach(string extension in extensions)
@@ -138,16 +144,16 @@ namespace YoloMark
 
         public void Initialize()
         {
-            string[] imageFileNames = GetImageFileNames(ImageFolder, "*.jpg", ".JPG", "*.jpeg", "*.JPEG", "*.png", "*.bmp", "*.gif");
+            string[] imageFileNames = GetimageFileNames(this.imageFolder, "*.jpg", ".JPG", "*.jpeg", "*.JPEG", "*.png", "*.bmp", "*.gif");
             Array.Sort(imageFileNames);
-            this.ImageFileNames = imageFileNames;
+            this.imageFileNames = imageFileNames;
 
-            string[] objectFileNames = Directory.GetFiles(ImageFolder, "*.txt");
+            string[] objectFileNames = Directory.GetFiles(this.imageFolder, "*.txt");
             Array.Sort(objectFileNames);
-            this.ObjectFileNames = objectFileNames;
+            this.objectFileNames = objectFileNames;
 
             List<string> objNames = new List<string>();
-            foreach (string line in File.ReadLines(this.ObjNamesFileName))
+            foreach (string line in File.ReadLines(this.objNamesFileName))
             {
                 if (!String.IsNullOrWhiteSpace(line))
                 {
@@ -155,21 +161,21 @@ namespace YoloMark
                 }
             }
 
-            this.YoloObjectNames = objNames.ToArray();
+            this.yoloObjectNames = objNames.ToArray();
 
             this.CreateTrainFile();
         }
 
         public string GetYoloObjectName(int objectNumber)
         {
-            return this.YoloObjectNames[objectNumber];
+            return this.yoloObjectNames[objectNumber];
         }
 
         public int GetStartImageNumber()
         {
-            for (int i = 0; i < this.ImageFileNames.Length; i++)
+            for (int i = 0; i < this.imageFileNames.Length; i++)
             {
-                if (i >= this.ObjectFileNames.Length || GetFileName(this.ImageFileNames[i]) != GetFileName(this.ObjectFileNames[i]))
+                if (i >= this.objectFileNames.Length || GetFileName(this.imageFileNames[i]) != GetFileName(this.objectFileNames[i]))
                 {
                     return i;
                 }
@@ -193,7 +199,7 @@ namespace YoloMark
         public void RemoveYoloFile(int currentImageNumber)
         {
             this.YoloObjects.Clear();
-            string textFileName = ImageFolder + GetFileName(this.ImageFileNames[currentImageNumber]) + ".txt";
+            string textFileName = this.imageFolder + GetFileName(this.imageFileNames[currentImageNumber]) + ".txt";
             if (File.Exists(textFileName))
             {
                 File.Delete(textFileName);
@@ -202,6 +208,11 @@ namespace YoloMark
 
         public void RemoveLastYoloObject(int currentImageNumber)
         {
+            if (this.YoloObjects.Count == 0)
+            {
+                return;
+            }
+
             this.YoloObjects.RemoveAt(this.YoloObjects.Count - 1);
             this.RewriteObjectFile(currentImageNumber);
             if (this.YoloObjects.Count == 0)
@@ -215,8 +226,8 @@ namespace YoloMark
             try
             {
                 Debug.WriteLine("Create train file");
-                StreamWriter fout = new StreamWriter(TrainFileName);
-                foreach (string str in ImageFileNames)
+                StreamWriter fout = new StreamWriter(this.trainFileName);
+                foreach (string str in this.imageFileNames)
                 {
                     fout.WriteLine(str);
                 }
@@ -231,7 +242,7 @@ namespace YoloMark
 
         private void RewriteObjectFile(int imageNumber)
         {
-            StreamWriter fout = new StreamWriter(ImageFolder + GetFileName(this.ImageFileNames[imageNumber]) + ".txt");
+            StreamWriter fout = new StreamWriter(this.imageFolder + GetFileName(this.imageFileNames[imageNumber]) + ".txt");
             foreach (YoloObject yoloObj in this.YoloObjects)
             {
                 fout.WriteLine(yoloObj.ToString());
