@@ -27,6 +27,7 @@ namespace YoloMark
         private const int SelectBoxObjectNameFontSize = 30;
         private const int MinSelectBoxWidth = 15;
         private const int MinSelectBoxHeight = 15;
+        private const int ClickableAreaBorderWidth = 22;
 
         private Dictionary<Key, int> keyObjectBinding = new Dictionary<Key, int>()
         {
@@ -291,11 +292,15 @@ namespace YoloMark
             }
 
             Point mousePos = Mouse.GetPosition(MainCanvas);
-            if (mousePos.X < 0 || mousePos.Y < 0 || mousePos.X > MainCanvas.ActualWidth || mousePos.Y > MainCanvas.ActualHeight)
+            if (mousePos.X < -ClickableAreaBorderWidth || mousePos.Y < -ClickableAreaBorderWidth || mousePos.X > MainCanvas.ActualWidth + ClickableAreaBorderWidth || mousePos.Y > MainCanvas.ActualHeight + ClickableAreaBorderWidth)
             {
                 return;
             }
 
+            mousePos.X = mousePos.X < 0 ? 0 : mousePos.X;
+            mousePos.Y = mousePos.Y < 0 ? 0 : mousePos.Y;
+            mousePos.X = mousePos.X > MainCanvas.ActualWidth ? MainCanvas.ActualWidth : mousePos.X;
+            mousePos.Y = mousePos.Y > MainCanvas.ActualHeight ? MainCanvas.ActualHeight : mousePos.Y;
             this.selectBoxStartPos = mousePos;
             GetBox(0, 0, (int)SliderObjectNumber.Value, out this.selectBox, out this.selectBoxTextBlock);
             Canvas.SetLeft(this.selectBox, this.selectBoxStartPos.X);
