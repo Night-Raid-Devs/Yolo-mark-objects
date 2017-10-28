@@ -362,6 +362,7 @@ namespace YoloMark
         private void SliderImageNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             this.ChangeImages((int)e.NewValue);
+            LabelImageName.Content = System.IO.Path.GetFileName(FileManager.Instance.ImageFileNames[(int)e.NewValue]);
         }
 
         private void MainCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
