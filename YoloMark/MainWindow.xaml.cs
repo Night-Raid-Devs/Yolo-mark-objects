@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace YoloMark
 {
@@ -124,10 +125,12 @@ namespace YoloMark
 
         private void ResizeButton_Click(object sender, RoutedEventArgs e)
         {
-            int width = Convert.ToInt32(TextBoxWidth.Text) + (int)MainCanvas.Margin.Left + (int)MainCanvas.Margin.Right + 16;
-            int height = Convert.ToInt32(TextBoxHeight.Text) + (int)MainCanvas.Margin.Top + (int)MainCanvas.Margin.Bottom + 39;
-            MainWnd.Width = width;
-            MainWnd.Height = height;
+            double newWidth = Convert.ToDouble(TextBoxWidth.Text, CultureInfo.InvariantCulture);
+            double newHeight = Convert.ToDouble(TextBoxHeight.Text, CultureInfo.InvariantCulture);
+            double currWidth = MainCanvas.ActualWidth;
+            double currHeight = MainCanvas.ActualHeight;
+            MainWnd.Width += newWidth - currWidth;
+            MainWnd.Height += newHeight - currHeight;
         }
 
         private static Point GetTopLeftPoint(PointCollection points)
@@ -179,8 +182,10 @@ namespace YoloMark
                 Point bottomRightPoint = GetBottomRightPoint(pointCollection);
                 Canvas.SetLeft(this.selectBox, topLeftPoint.X);
                 Canvas.SetTop(this.selectBox, topLeftPoint.Y);
-                this.selectBox.Width = bottomRightPoint.X - topLeftPoint.X;
-                this.selectBox.Height = bottomRightPoint.Y - topLeftPoint.Y;
+                double width = bottomRightPoint.X - topLeftPoint.X;
+                double height = bottomRightPoint.Y - topLeftPoint.Y;
+                this.selectBox.Width = width > 0 ? width : 0;
+                this.selectBox.Height = height > 0 ? height : 0;
 
                 Canvas.SetLeft(this.selectBoxTextBlock, topLeftPoint.X + SelectBoxBorderWidth);
                 Canvas.SetTop(this.selectBoxTextBlock, topLeftPoint.Y + SelectBoxBorderWidth - 10);

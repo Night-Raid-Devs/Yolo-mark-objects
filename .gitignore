@@ -15,9 +15,6 @@
 # Binary files
 *.exe
 
-# Text files
-*.txt
-
 # Build results
 [Dd]ebugPublic/
 [Rr]elease/
