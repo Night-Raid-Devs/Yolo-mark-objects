@@ -102,6 +102,7 @@ namespace YoloMark
 
         private void ChangeImages(int currentImageNumber)
         {
+            this.RemoveSelectBox();
             this.RemoveCurrentBoxes();
             BitmapImage[] previewBitmapImages = FileManager.Instance.GetPreviewImages(PreviewImagesCount, currentImageNumber, out bool[] isCheched);
             for (int i = 0; i < previewImages.Length; i++)
