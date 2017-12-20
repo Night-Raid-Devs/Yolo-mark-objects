@@ -332,22 +332,16 @@ namespace YoloMark
             {
                 SliderObjectNumber.Value = this.keyObjectBinding[e.Key];
             }
-        }
 
-        private void MainWnd_KeyUp(object sender, KeyEventArgs e)
-        {
             switch (e.Key)
             {
                 case Key.Left:
-                    this.RemoveCurrentBoxes();
                     SliderImageNumber.Value--;
                     break;
                 case Key.Right:
-                    this.RemoveCurrentBoxes();
                     SliderImageNumber.Value++;
                     break;
                 case Key.Space:
-                    this.RemoveCurrentBoxes();
                     SliderImageNumber.Value++;
                     break;
                 case Key.Back:
@@ -361,11 +355,21 @@ namespace YoloMark
                 case Key.Escape:
                     this.Close();
                     break;
+                case Key.Tab:
+                    if (this.selectBox != null)
+                    {
+                        SolidColorBrush boxColor = new SolidColorBrush(Color.FromRgb((byte)(random.Next() % 256), (byte)(random.Next() % 256), (byte)(random.Next() % 256)));
+                        this.selectBox.Stroke = boxColor;
+                        this.selectBoxTextBlock.Foreground = boxColor;
+                    }
+
+                    break;
             }
         }
 
         private void SliderImageNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            this.RemoveCurrentBoxes();
             this.ChangeImages((int)e.NewValue);
             LabelImageName.Content = System.IO.Path.GetFileName(FileManager.Instance.ImageFileNames[(int)e.NewValue]);
         }
@@ -388,8 +392,9 @@ namespace YoloMark
 
         private void SliderObjectNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LabelObjectName.Content = FileManager.Instance.GetYoloObjectName((int)e.NewValue);
-            LabelObjectName2.Content = FileManager.Instance.GetYoloObjectName((int)e.NewValue) + " (" + e.NewValue + ")";
+            string yoloObjectName = FileManager.Instance.GetYoloObjectName((int)e.NewValue);
+            LabelObjectName.Content = yoloObjectName;
+            LabelObjectName2.Content = yoloObjectName + " (" + e.NewValue + ")";
         }
     }
 }

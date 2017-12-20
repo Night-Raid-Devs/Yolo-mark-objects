@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoloMark"
         mc:Ignorable="d"
-        Title="Yolo mark objects" Width="1060" Height="453" Loaded="MainWindow_Loaded" MouseMove="MainWnd_MouseMove" MouseLeftButtonDown="MainWnd_MouseLeftButtonDown" MouseLeftButtonUp="MainWnd_MouseLeftButtonUp" MouseRightButtonDown="MainWnd_MouseRightButtonDown" KeyDown="MainWnd_KeyDown" KeyUp="MainWnd_KeyUp">
+        KeyboardNavigation.TabNavigation="None"
+        Title="Yolo mark objects" Width="1060" Height="453" Loaded="MainWindow_Loaded" MouseMove="MainWnd_MouseMove" MouseLeftButtonDown="MainWnd_MouseLeftButtonDown" MouseLeftButtonUp="MainWnd_MouseLeftButtonUp" MouseRightButtonDown="MainWnd_MouseRightButtonDown" KeyDown="MainWnd_KeyDown">
     <Grid>
         <TextBox x:Name="TextBoxWidth" Text="{Binding ElementName=MainCanvas,Path=ActualWidth,Mode=OneWay}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Margin="10,4,0,0"/>
         <TextBox x:Name="TextBoxHeight" Text="{Binding ElementName=MainCanvas,Path=ActualHeight,Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="65,4,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
