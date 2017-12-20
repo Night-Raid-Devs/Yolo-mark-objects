@@ -102,6 +102,7 @@ namespace YoloMark
 
         private void ChangeImages(int currentImageNumber)
         {
+            this.RemoveCurrentBoxes();
             BitmapImage[] previewBitmapImages = FileManager.Instance.GetPreviewImages(PreviewImagesCount, currentImageNumber, out bool[] isCheched);
             for (int i = 0; i < previewImages.Length; i++)
             {
@@ -291,6 +292,9 @@ namespace YoloMark
 
         private void MainWnd_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            this.GridMain.Focusable = true;
+            Keyboard.Focus(this.GridMain);
+            this.GridMain.Focusable = false;
             if (this.AddSelectBox())
             {
                 return;
@@ -364,12 +368,14 @@ namespace YoloMark
                     }
 
                     break;
+                case Key.F5:
+                    this.ChangeImages((int)SliderImageNumber.Value);
+                    break;
             }
         }
 
         private void SliderImageNumber_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            this.RemoveCurrentBoxes();
             this.ChangeImages((int)e.NewValue);
             LabelImageName.Content = System.IO.Path.GetFileName(FileManager.Instance.ImageFileNames[(int)e.NewValue]);
         }
@@ -395,6 +401,20 @@ namespace YoloMark
             string yoloObjectName = FileManager.Instance.GetYoloObjectName((int)e.NewValue);
             LabelObjectName.Content = yoloObjectName;
             LabelObjectName2.Content = yoloObjectName + " (" + e.NewValue + ")";
+        }
+
+        private void ImagePreview_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var elem = (FrameworkElement)sender;
+            int changeDistance = Convert.ToInt32(elem.Tag);
+            if (changeDistance == 0)
+            {
+                this.ChangeImages((int)SliderImageNumber.Value);
+            }
+            else
+            {
+                SliderImageNumber.Value += changeDistance;
+            }
         }
     }
 }
