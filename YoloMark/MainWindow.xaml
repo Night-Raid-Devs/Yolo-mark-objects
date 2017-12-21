@@ -41,19 +41,19 @@
             <Canvas Background="Transparent" Tag="2" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3"/>
             <Canvas Background="Transparent" Tag="3" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="4"/>
             <Image x:Name="ImagePreview1" Tag="-1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0"/>
-            <Image x:Name="ImagePreview1Check" Tag="-1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="0" Source="green_check.png" Visibility="Hidden"/>
+            <Image x:Name="ImagePreview1Check" Tag="-1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Grid.Column="0" Source="green_check.png" Visibility="Hidden"/>
             <Image x:Name="ImagePreview2" Tag="0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
-            <Image x:Name="ImagePreview2Check" Tag="0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="1" Source="green_check.png" Visibility="Hidden"/>
+            <Image x:Name="ImagePreview2Check" Tag="0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Grid.Column="1" Source="green_check.png" Visibility="Hidden"/>
             <Image x:Name="ImagePreview3" Tag="1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2"/>
-            <Image x:Name="ImagePreview3Check" Tag="1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="2" Source="green_check.png" Visibility="Hidden"/>
+            <Image x:Name="ImagePreview3Check" Tag="1" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Grid.Column="2" Source="green_check.png" Visibility="Hidden"/>
             <Image x:Name="ImagePreview4" Tag="2" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3"/>
-            <Image x:Name="ImagePreview4Check" Tag="2" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="3" Source="green_check.png" Visibility="Hidden"/>
+            <Image x:Name="ImagePreview4Check" Tag="2" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Grid.Column="3" Source="green_check.png" Visibility="Hidden"/>
             <Image x:Name="ImagePreview5" Tag="3" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="4"/>
-            <Image x:Name="ImagePreview5Check" Tag="3" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,172,85" Grid.Column="4" Source="green_check.png" Visibility="Hidden"/>
+            <Image x:Name="ImagePreview5Check" Tag="3" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" Margin="10,10" HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Grid.Column="4" Source="green_check.png" Visibility="Hidden"/>
             <Border BorderBrush="Green" BorderThickness="3" Tag="0" MouseLeftButtonDown="ImagePreview_MouseLeftButtonDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1"/>
         </Grid>
         <Label x:Name="LabelObjectName" Content="ObjectName" HorizontalAlignment="Left" Margin="965,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.921,0.231"/>
         <Label x:Name="LabelObjectName2" Foreground="Green" Content="ObjectName" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="Bold"/>
-        <Label Content="arrows - prev, next, space - next, Esc - exit, Backspace - remove last, Del - remove all, others - your bindings" HorizontalAlignment="Left" Margin="300,153,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label Content="arrows - prev, next, space - next, Esc - exit, Backspace - remove last, Del - remove all,&#10;Tab - change current box color, F5 - update boxes colors, others - your bindings" HorizontalAlignment="Left" Margin="300,151,0,0" VerticalAlignment="Top" FontSize="12"/>
     </Grid>
 </Window>
